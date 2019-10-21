@@ -18,8 +18,8 @@ function navApp(value) {
     if (value=="Journal") routie("journal");
 }
 
-require(['views/main', 'views/journal', 'views/folderView'],
-function(main, journal, folderView) {
+require(['views/main', 'views/journal', 'views/folderView', 'util/resourceProxy'],
+function(main, journal, folderView, resourceProxy) {
 webix.ready(function() {
 	webix.ui({
 	        container: "app",

@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Data
 @Entity
-public class actionFolder {
+public class ActionFolder {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;            // Индификатор поля

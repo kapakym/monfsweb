@@ -1,17 +1,27 @@
 define(function() {
-   var ajax = webix.ajax().hedaders(values:{
+   var ajax = webix.ajax().headers( {
         "Content-type":"application/json"
    })
-   webix.proxy.resource = {
+   webix.proxy.foldercontrol = {
        init:function(){
            webix.extend(this, webix.proxy.rest);
        },
        load:function(view, params){
-            return ajax.get("api/listfiles");
+            var url = view.config.url.source;
+            return ajax.get(url).then(function(value) {
+                return value.json().content
+            })
        },
        save:function(view, params){
-           params.data.meta = this.meta;
-           return webix.proxy.rest.save.call(this, view, params);
+            var id = params.id;
+            var url = view.config.url.source;
+            if (params.operation === 'update') {
+                return ajax.put(url+"/"+id, params.data)
+            } else if (params.operation === 'insert') {
+                return ajax.post(url, params.data)
+            } else if (params.operation === 'delete') {
+                return ajax.del(url + "/" + id)
+            }
        }
    }
 })

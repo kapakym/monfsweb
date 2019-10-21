@@ -37,24 +37,28 @@ define(function(){
             },
             { view: "toolbar",
                  cols:[
-                     { view:"button", id:"LoadBut", value:"Add folder", width:100, align:"left"},
+                     { view:"button", id:"LoadBut", value:"Add folder", width:100, align:"left",
+                       click:function(){
+                           if ($$("journal2").getSelectedId()!=0) {
+                                var myData = webix.ajax().post('api/listfiles', {folder: $$("journal2").getItem($$("journal2").getSelectedId()).folderName});
+                                $$('w_foldercontrol').clearAll();
+                                $$('w_foldercontrol').parse(myData);
+                                webix.message("Add: "+$$("journal2").getItem($$("journal2").getSelectedId()).folderName);
+                           }
+                       }
+                     },
                      { view:"button", value:"Remove folder(s)", width:200, align:"right" },
                      { view:"button", value:"Run", width:100, align:"right" },
                      { view:"button", value:"Stop", width:100, align:"right" },
 
                  ]
             },
-                        { view:"datatable",
+                        { view:"datatable", id:"w_foldercontrol",
                              columns:[
                                  { id:"id",    header:"id folder",              width:50},
                                  { id:"folderPath",   header:"Folder path",    width:200},
-                                // { id:"year",    header:"Released",      width:80},
-                                // { id:"votes",   header:"Votes",         width:100}
-                             ], url: "/api/folderc"
-                            // data: [
-                               //  { id:1, fname:"/home"},
-                                 //{ id:2, title:"The Godfather", year:1972, votes:511495, rank:2}
-                             //]
+                             ],
+                           url: 'foldercontrol->/api/folderc'
                         },
 
 

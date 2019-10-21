@@ -9,7 +9,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class folderControl {
+public class FolderControl {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
