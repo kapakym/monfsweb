@@ -1,4 +1,4 @@
-var input1 = document.createElement('input');
+
 
 define(function(){
     return {
@@ -6,7 +6,8 @@ define(function(){
             { view: "toolbar",
                  cols:[
                      { view:"label", name:"headp", label:"Path: ",  align:"right", width:50},
-                     { view:"label", name:"path", id:"path", label:"/",  align:"left", width:200},
+                     { view:"label", name:"path", id:"path", label:"/",  align:"left", fillspace:true},
+                      { view:"button", value:"Enter", width:100, align:"right" }
                     // { view:"button", value:"Go", width:100, align:"right" },
                  ]
             },
@@ -14,6 +15,7 @@ define(function(){
             { view: "list",
               id: "journal2",
               template:"<span class='info'>[    #folderName#    ]</span>",
+              fillspace:true,
               select:true,
               url: "/api/listfiles",
 
@@ -40,25 +42,32 @@ define(function(){
                      { view:"button", id:"LoadBut", value:"Add folder", width:100, align:"left",
                        click:function(){
                            if ($$("journal2").getSelectedId()!=0) {
-                                var myData = webix.ajax().post('api/listfiles', {folder: $$("journal2").getItem($$("journal2").getSelectedId()).folderName});
+                                var myData = webix.ajax().post('api/controltable', {folder: $$("journal2").getItem($$("journal2").getSelectedId()).folderName});
                                 $$('w_foldercontrol').clearAll();
                                 $$('w_foldercontrol').parse(myData);
                                 webix.message("Add: "+$$("journal2").getItem($$("journal2").getSelectedId()).folderName);
                            }
                        }
                      },
-                     { view:"button", value:"Remove folder(s)", width:200, align:"right" },
+                     { view:"button", value:"Remove folder(s)", width:200, align:"right",
+                       click:function(){
+                            var myData = webix.ajax().del('api/controltable', {id:$$('w_foldercontrol').getSelectedId().id});
+                            $$('w_foldercontrol').clearAll();
+                            $$('w_foldercontrol').parse(myData);
+                       }
+                     },
                      { view:"button", value:"Run", width:100, align:"right" },
                      { view:"button", value:"Stop", width:100, align:"right" },
 
                  ]
             },
-                        { view:"datatable", id:"w_foldercontrol",
+                        { view:"datatable", id:"w_foldercontrol", select:true,
                              columns:[
                                  { id:"id",    header:"id folder",              width:50},
-                                 { id:"folderPath",   header:"Folder path",    width:200},
+                                 { id:"folderPath",   header:"Folder path",    fillspace:true},
+                                 { id:"status", header:"Status"}
                              ],
-                           url: 'foldercontrol->/api/folderc'
+                           url: 'api/controltable'
                         },
 
 

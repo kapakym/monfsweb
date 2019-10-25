@@ -14,4 +14,5 @@ public class FolderControl {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     private String folderPath; // Папка выбранная для контроля
+    private String status;
 }

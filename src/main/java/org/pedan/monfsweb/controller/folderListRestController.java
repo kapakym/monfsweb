@@ -1,11 +1,12 @@
 package org.pedan.monfsweb.controller;
+/*
+Данный контроллер предназначен для получения списка файлов на backend и передачи их
+на frontend. Из этого списка пользователь выбирает папки, которые подлежат контрлю.
+Говоря простым языком это реализация простого файлого менеджера реализованного с помощью
+list из webix. В ход в папку осуществляет двойным кликом мыши по названию папки.
+*/
 
-
-import org.pedan.monfsweb.FolderListRepo;
-import org.pedan.monfsweb.domain.FolderControl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
@@ -16,8 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("api/listfiles")
 public class folderListRestController {
-    @Autowired
-    private FolderListRepo folderListRepo;
+
 
     private String GPath;
     public List<Map<String, String>> folders_list = new ArrayList<Map<String, String>>() {{
@@ -71,15 +71,7 @@ public class folderListRestController {
         return folders_list;
     }
 
-    @PostMapping()
-    public Iterable<FolderControl> add(@RequestParam String folder) {
-        FolderControl folderControl = new FolderControl();
-        folderControl.setFolderPath(folder);
-        folderListRepo.save(folderControl);
-        //List<Map<String, String>> model =
 
-        return folderListRepo.findAll();
-    }
 
     @PutMapping("{folderName}")
     public List<Map<String, String>> update_put(@RequestBody String folder) {

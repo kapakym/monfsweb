@@ -39,7 +39,7 @@ webix.ready(function() {
             				]
             				},
 	            { cols: [
-	                { "view": "sidebar", "width": 250, height: 600,
+	                { "view": "sidebar", "width": 250, 'height': 600,
 	                    data: [
                             { "value": "Folder setting", "icon": "wxi-check"},
                             { "value": "Journal", "icon": "wxi-dots"},
