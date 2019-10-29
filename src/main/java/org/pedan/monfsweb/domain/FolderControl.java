@@ -15,4 +15,12 @@ public class FolderControl {
     private Long id;
     private String folderPath; // Папка выбранная для контроля
     private String status;
+
+//    public void setFolderPath(String folder) {
+//        folderPath=folder;
+//    }
+//
+//    public void setStatus(String stop) {
+//        status=stop;
+//    }
 }

@@ -59,14 +59,13 @@ public class folderListRestController {
 
     @GetMapping
     public List<Map<String, String>> list() {
-
         getFolders("/");
         return folders_list;
     }
 
     @GetMapping("{folderName}")
     public List<Map<String, String>> listby(@RequestParam String folder) {
-        System.out.println(folder);
+//        System.out.println(folder);
         getFolders(folder);
         return folders_list;
     }

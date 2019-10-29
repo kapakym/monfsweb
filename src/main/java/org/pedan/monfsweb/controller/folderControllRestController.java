@@ -1,9 +1,18 @@
 package org.pedan.monfsweb.controller;
+/*
+В данном контроле обрабатываются события по созданию, остановке и уничтожению потоков
+ослеживающих информацию о состоянии контролиремых папок.
+* */
 
+import org.pedan.monfsweb.MonfswebApplication;
+import org.pedan.monfsweb.MyThread;
 import org.pedan.monfsweb.domain.FolderControl;
 import org.pedan.monfsweb.repos.folderControlRepo;
+import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/controltable")
@@ -16,22 +25,32 @@ public class folderControllRestController {
         return folderListRepo.findAll();
     }
 
+//Метод отвечающий за добавление контролируемой директории в базу данных
+
     @PostMapping()
     public Iterable<FolderControl> add(@RequestParam String folder) {
-        FolderControl folderControl = new FolderControl();
-        folderControl.setFolderPath(folder);
-        folderControl.setStatus("Stop");
-        folderListRepo.save(folderControl);
 
-//        Iterable<FolderControl> res = folderListRepo.findAll();
-//        List<StatusFolder> myRes = new ArrayList<>();
-//        for (FolderControl res1 : res) {
-//            myRes.add(new StatusFolder(res1.getId(),res1.getFolderPath(),"Stop"));
-//        }
-//
-//        //System.out.println(res);
-//        System.out.println(myRes);
-//        System.out.println(res);
+        List<FolderControl> myList = folderListRepo.findByfolderPath(folder);
+        System.out.println(myList);
+        if (myList.size() == 0) {
+            System.out.println(folder);
+            FolderControl folderControl = new FolderControl();
+
+            folderControl.setFolderPath(folder);
+            folderControl.setStatus("Stop");
+            folderListRepo.save(folderControl);
+
+        }
+        return folderListRepo.findAll();
+    }
+
+    @PostMapping("run")
+    public Iterable<FolderControl> run(@RequestParam String folder) {
+        System.out.println("Run " + folder);
+        MyThread myThread = new MyThread("Monitor", folder);
+        myThread.setDaemon(true);
+        myThread.start();
+        MonfswebApplication.myThreadList.add(myThread);
         return folderListRepo.findAll();
     }
 

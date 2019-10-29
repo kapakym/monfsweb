@@ -17,6 +17,6 @@ public class ActionFolder {
     private Long id;            // Индификатор поля
     private String fileName;    // Имя изменненного файла
     private String action;      // Тип операции над файлом (ИЗМЕНЕНИЕ, УДАЛЕНИЕ, СОЗДАНИЕ)
-    private Long fileSize;      // Ращмер файла
+    private Long fileSize;      // Размер файла
     private Date actionDate;    // Дата возникновения операции
 }

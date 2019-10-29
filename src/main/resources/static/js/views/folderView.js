@@ -56,7 +56,13 @@ define(function(){
                             $$('w_foldercontrol').parse(myData);
                        }
                      },
-                     { view:"button", value:"Run", width:100, align:"right" },
+                     { view:"button", value:"Run", width:100, align:"right",
+                       click: function(){
+                            var myData = webix.ajax().post('api/controltable/run', {folder:$$('w_foldercontrol').getItem($$('w_foldercontrol').getSelectedId()).folderPath});
+                            $$('w_foldercontrol').clearAll();
+                            $$('w_foldercontrol').parse(myData);
+                       }
+                     },
                      { view:"button", value:"Stop", width:100, align:"right" },
 
                  ]
@@ -67,7 +73,9 @@ define(function(){
                                  { id:"folderPath",   header:"Folder path",    fillspace:true},
                                  { id:"status", header:"Status"}
                              ],
-                           url: 'api/controltable'
+
+                           url: 'api/controltable',
+
                         },
 
 
