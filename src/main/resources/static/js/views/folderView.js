@@ -11,9 +11,29 @@ define(function(){
                     // { view:"button", value:"Go", width:100, align:"right" },
                  ]
             },
+                        { view: "list",
+                                                    id: "listdisk",
+                                                    template:"<span class='info'>[    #diskName#    ]</span>",
+                                                    fillspace:true,
+                                                    select:true,
+                                                    scroll:"x",
+                                                    layout:"x",
+                                                    url: "/api/disklist",
+
+
+                                                    onDblClick:{
+                                                          info:function(e, id) {
+                                                          webix.message("Selected: "+this.getItem(id).diskName);
+                                                          var myPath = this.getItem(id).diskName;
+                                                          $$("path").setValue(myPath);
+                                                          var myData =  webix.ajax().get("/api/listfiles/folderName", { folder:myPath});
+                                                          $$("listFolder").clearAll();
+                                                          $$("listFolder").parse(myData);
+                                                    }}
+                                                  },
 
             { view: "list",
-              id: "journal2",
+              id: "listFolder",
               template:"<span class='info'>[    #folderName#    ]</span>",
               fillspace:true,
               select:true,
@@ -26,9 +46,9 @@ define(function(){
                     var myPath = this.getItem(id).folderName;
                     if (this.getItem(id).folderName=="..") {
                         var myPath = $$("path").getValue();
-                        var indOf = myPath.lastIndexOf("/");
+                        var indOf = myPath.lastIndexOf("\\");
                         myPath = myPath.slice(0,indOf);
-                        if (myPath=="") myPath="/";
+                        if (myPath=="") myPath="\\";
                         webix.message("Selected: "+myPath);
                     }
                     $$("path").setValue(myPath);
@@ -41,11 +61,11 @@ define(function(){
                  cols:[
                      { view:"button", id:"LoadBut", value:"Add folder", width:100, align:"left",
                        click:function(){
-                           if ($$("journal2").getSelectedId()!=0) {
-                                var myData = webix.ajax().post('api/controltable', {folder: $$("journal2").getItem($$("journal2").getSelectedId()).folderName});
+                           if ($$("listFolder").getSelectedId()!=0) {
+                                var myData = webix.ajax().post('api/controltable', {folder: $$("listFolder").getItem($$("listFolder").getSelectedId()).folderName});
                                 $$('w_foldercontrol').clearAll();
                                 $$('w_foldercontrol').parse(myData);
-                                webix.message("Add: "+$$("journal2").getItem($$("journal2").getSelectedId()).folderName);
+                                webix.message("Add: "+$$("listFolder").getItem($$("listFolder").getSelectedId()).folderName);
                            }
                        }
                      },
@@ -58,7 +78,10 @@ define(function(){
                      },
                      { view:"button", value:"Run", width:100, align:"right",
                        click: function(){
-                            var myData = webix.ajax().post('api/controltable/run', {folder:$$('w_foldercontrol').getItem($$('w_foldercontrol').getSelectedId()).folderPath});
+                            var myData = webix.ajax().post('api/controltable/run', {
+                                folder:$$('w_foldercontrol').getItem($$('w_foldercontrol').getSelectedId()).folderPath,
+                                id: $$('w_foldercontrol').getSelectedId().id
+                            });
                             $$('w_foldercontrol').clearAll();
                             $$('w_foldercontrol').parse(myData);
                        }

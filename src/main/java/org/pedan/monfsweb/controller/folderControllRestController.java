@@ -4,6 +4,7 @@ package org.pedan.monfsweb.controller;
 ослеживающих информацию о состоянии контролиремых папок.
 * */
 
+import org.omg.PortableServer.REQUEST_PROCESSING_POLICY_ID;
 import org.pedan.monfsweb.MonfswebApplication;
 import org.pedan.monfsweb.MyThread;
 import org.pedan.monfsweb.domain.FolderControl;
@@ -45,11 +46,16 @@ public class folderControllRestController {
     }
 
     @PostMapping("run")
-    public Iterable<FolderControl> run(@RequestParam String folder) {
-        System.out.println("Run " + folder);
+    public Iterable<FolderControl> run(@RequestParam String folder, @RequestParam Long id) {
+        System.out.println("Run " + folder+" id "+id);
+        FolderControl folderControl = new FolderControl();
+        folderControl.setId(id);
+        folderControl.setFolderPath(folder);
+        folderControl.setStatus("Run");
         MyThread myThread = new MyThread("Monitor", folder);
         myThread.setDaemon(true);
         myThread.start();
+        folderListRepo.save(folderControl);
         MonfswebApplication.myThreadList.add(myThread);
         return folderListRepo.findAll();
     }

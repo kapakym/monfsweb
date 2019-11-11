@@ -14,7 +14,8 @@ import java.util.Map;
 
 public class MyThread extends Thread {
     @Autowired
-    private actionFolderRepo myRepoFolder;
+    private static actionFolderRepo myRepoFolder;
+
     private static Map<WatchKey, Path> keyPathMap = new HashMap<>();
 
     public Path getPathDir() {
@@ -111,7 +112,7 @@ public class MyThread extends Thread {
                     actionFolder.setAction("modify");
                     System.out.println("File " + path.toString() + " modify ");
                 }
-
+                myRepoFolder.save(actionFolder);
             }
             if (!queuedKey.reset()) {
                 keyPathMap.remove(queuedKey);

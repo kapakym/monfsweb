@@ -59,7 +59,7 @@ public class folderListRestController {
 
     @GetMapping
     public List<Map<String, String>> list() {
-        getFolders("/");
+        getFolders("\\");
         return folders_list;
     }
 
